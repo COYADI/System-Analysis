@@ -1,0 +1,181 @@
+/*
+ * Author 	: HIMANSHU GUPTA 
+ * Email 		: himanshucse2012@gmail.com
+ * Website	:	http://www.indioweb.in/portfolio
+ */
+ 
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600);
+
+/*
+ * Basic CSS starts 
+ */
+
+body{
+	font-family: 'Open Sans', Sans Sarif;
+	color: #787878;
+	-webkit-font-smoothing: antialiased;
+	background-color: black;
+}
+
+.btn{
+	font-family: 'Open Sans', Sans Sarif;
+	background: #FFFFFF;
+	color: #000000;
+	letter-spacing: 0.1em;
+	font-weight: bolder;
+}
+
+.btn:hover{
+	transition: all 0.5s;
+}
+
+h1,h2,h3,h4,h5,h6{
+	font-family: 'Open Sans', Sans Sarif;
+	font-weight: 600;
+}
+
+p{
+	margin:0;
+	padding:0;
+	line-height: 24px;
+	font-size: 14px;
+}
+
+a{
+	text-decoration: none;
+}
+
+a:hover{
+	text-decoration: none;
+}
+
+a:hover,a:active,a:focus {
+	outline: 0 !important;
+}
+
+hr{
+
+}
+
+:focus {
+	outline:none;
+}
+
+::-moz-focus-inner {
+	border:0;
+}
+
+.button{
+	color: #FFFFFF;
+	text-decoration: underline;
+	font-family: 'Open Sans', Sans Sarif;
+	letter-spacing: 0.1em;
+}
+
+.color{
+	background: #32c8de;
+}
+.color-hover{
+	background: #2bbdd2;
+}
+
+/* 
+ * Basic CSS ends 
+ */
+
+.banner {
+	border-top: 52px solid #000000;
+	background: #fff url('../img/banner.jpg') repeat-x center center;
+	display:flex;
+    height: 700px;
+}
+
+.banner .container {
+	max-width: 800px;
+}
+
+.banner .banner-content {
+	padding: 150px 0; 
+}
+
+.banner .banner-content p {
+	margin-top: 10px;
+	margin-bottom: 15px;
+	font-size: 20px;
+	text-transform: capitalize;
+	letter-spacing: 0.1em;
+	color: #fff;
+}
+
+.banner .banner-content .btn {
+	border-radius: 3px;
+}
+
+.form-font{
+	color: white;
+	font-family: 'Open Sans', Sans Sarif;
+	letter-spacing: 0.1em;
+}
+
+.Data-Content {
+    width: 100%; /* 表單寬度 */
+    line-height: 40px;
+}
+
+.Data-Title {
+    float: left;
+    width: 25%; /* Label寬度，視情況調整 */
+    margin-right: 20px;
+}
+
+.Data-Items {
+    float: left;
+    width: 25%;
+}
+
+.AlignRight {
+    text-align: right;
+}
+
+.inputbox{
+	border: none;
+	background-color: transparent;
+	border-bottom: 2px solid white;
+}
+
+.submitbox{
+	background-color: black;
+	width: 100px;
+	font-family: 'Open Sans', Sans Sarif;
+	letter-spacing: 0.1em;
+	border: none;
+}
+ 
+/*
+ * Responsive CSS 
+ */
+
+/*
+ * Mobile phones 
+ */
+@media (max-width: 480px){
+
+}
+
+/*
+ * Tablets 
+ */
+@media (max-width: 767px){
+	.banner .banner-content { text-align: center;}
+	.banner .banner-content img {
+		max-width: 180px;
+		margin: 0 auto;
+	}
+}	
+
+/*
+ * Desktop 
+ */
+@media (max-width: 991px){
+
+}
