@@ -29,14 +29,14 @@ class Team(models.Model):
 		('棒壘', 'baseball')
 		)
 	sport_name = models.CharField(max_length = 10, choices = SPORT_TEAMS)
-	captain = models.ForeignKey(Player, on_delete = models.CASCADE, null = True)
+	captain = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)
 
 	def __str__(self):
 		return self.sport_name
 
 class Playing_Sport(models.Model):
-	player = models.ForeignKey(Player, on_delete = models.CASCADE, null = True)
-	sport_name = models.ForeignKey(Team, on_delete = models.CASCADE, null = True)
+	player = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)
+	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
 	points_left = models.IntegerField()
 	points_received = models.IntegerField(default = 0)
 
@@ -44,6 +44,6 @@ class Playing_Sport(models.Model):
 		return self.player.name + ' ' + self.sport_name.sport_name
 
 class Training(models.Model):
-	sport_name = models.ForeignKey(Team, on_delete = models.CASCADE, null = True)
+	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
 	time = models.DateTimeField()
 	court = models.CharField(max_length = 20)
