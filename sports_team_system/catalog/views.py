@@ -59,5 +59,18 @@ def logout(request):
 	return HttpResponseRedirect('/index/')
 
 def mainpage(request):
-	current_user = request.user
-	return render(request, 'mainpage.html', {'user' : current_user.name})
+	if request.user.is_authenticated:
+		current_user = request.user
+		current_playing_sport = Playing_Sport.objects.filter(player = current_user)
+		current_team = []
+		for i in current_playing_sport:
+			current_team.append(i.sport_name)
+		for i in current_team:
+			training_to_see = Training.objects.filter(sport_name = i)
+			voting_to_see = Voting.objects.filter(sport_name = i)
+			noticing_to_see = Noticing.objects.filter(sport_name = i)
+
+
+		return render(request, 'mainpage.html', locals())
+	else:
+		return HttpResponseRedirect('/login/')

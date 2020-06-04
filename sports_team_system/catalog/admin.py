@@ -13,3 +13,15 @@ class TeamAdmin(admin.ModelAdmin):
 @admin.register(Playing_Sport)
 class Playing_SportAdmin(admin.ModelAdmin):
 	list_display = ('player', 'sport_name')
+
+@admin.register(Training)
+class TrainingAdmin(admin.ModelAdmin):
+	list_display = ('poster', 'sport_name', 'end_time', 'expire_time', 'time', 'court')
+
+@admin.register(Voting)
+class VotingAdmin(admin.ModelAdmin):
+	list_display = ('poster', 'sport_name', 'end_time', 'expire_time')
+
+@admin.register(Noticing)
+class NoticingAdmin(admin.ModelAdmin):
+	list_display = ('poster', 'sport_name', 'expire_time', 'paragraph')

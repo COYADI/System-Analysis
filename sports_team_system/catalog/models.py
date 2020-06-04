@@ -44,6 +44,24 @@ class Playing_Sport(models.Model):
 		return self.player.name + ' ' + self.sport_name.sport_name
 
 class Training(models.Model):
+	poster = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)
 	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
-	time = models.DateTimeField()
+	end_time = models.DateTimeField(null = True)
+	expire_time = models.DateTimeField(null = True)
+	time = models.DateTimeField(null = True)
 	court = models.CharField(max_length = 20)
+	participant = models.ManyToManyField(Playing_Sport)
+
+class Voting(models.Model):
+	poster = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)
+	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
+	end_time = models.DateTimeField(null = True)
+	expire_time = models.DateTimeField(null = True)
+	participant = models.ManyToManyField(Playing_Sport)
+
+class Noticing(models.Model):
+	poster = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)
+	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
+	expire_time = models.DateTimeField(null = True)
+	paragraph = models.TextField()
+
