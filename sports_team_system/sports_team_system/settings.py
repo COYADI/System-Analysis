@@ -133,6 +133,9 @@ INSTALLED_APPS = [
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+MEDIA_ROOT  = os.path.join(BASE_DIR, 'media').replace('\\', '/')
+
 AUTH_USER_MODEL = 'catalog.Player'
 AUTHENTICATION_BACKENDS = (
         ('django.contrib.auth.backends.RemoteUserBackend'),

@@ -66,6 +66,7 @@ def mainpage(request):
 		if request.method == 'GET':
 			current_user = request.user
 			current_playing_sport = Playing_Sport.objects.filter(player = current_user)
+			personal_photo = current_user.personal_photo
 			current_team = []
 			training_to_see = []
 			voting_to_see = []
