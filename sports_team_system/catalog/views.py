@@ -7,6 +7,7 @@ from django.contrib.auth.hashers import make_password,check_password
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.core.mail import send_mail
+from django.utils import timezone
 
 # Create your views here.
 def hello_view(request):
@@ -63,12 +64,15 @@ def mainpage(request):
 		current_user = request.user
 		current_playing_sport = Playing_Sport.objects.filter(player = current_user)
 		current_team = []
+		training_to_see = []
+		voting_to_see = []
+		noticing_to_see = []
 		for i in current_playing_sport:
 			current_team.append(i.sport_name)
 		for i in current_team:
-			training_to_see = Training.objects.filter(sport_name = i)
-			voting_to_see = Voting.objects.filter(sport_name = i)
-			noticing_to_see = Noticing.objects.filter(sport_name = i)
+			training_to_see += Training.objects.filter(sport_name = i, expire_time__gte = timezone.now())
+			voting_to_see += Voting.objects.filter(sport_name = i, expire_time__gte = timezone.now())
+			noticing_to_see += Noticing.objects.filter(sport_name = i, expire_time__gte = timezone.now())
 
 
 		return render(request, 'mainpage.html', locals())

@@ -13,7 +13,7 @@ class Player(AbstractUser):
 	student_card_back = models.ImageField(upload_to = 'student_card_back', blank = True)
 	ID_card = models.ImageField(upload_to = 'ID_card', blank = True)
 	proof = models.ImageField(upload_to = 'proof', blank = True)
-	is_active = models.BooleanField(default = False)
+	is_active = models.BooleanField(default = True)
 
 	def __str__(self):
 		return self.name
