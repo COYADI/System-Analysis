@@ -24,7 +24,8 @@ urlpatterns = [
     path('register/', register),
     path('login/', login),
     path('logout/', logout),
-    path('mainpage/', mainpage)
+    path('mainpage/', mainpage),
+    path('settings/', settings)
 ]
 
 # Use include() to add paths from the catalog application 

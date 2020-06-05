@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from datetime import datetime
 
 # Create your models here.
 class Player(AbstractUser):
@@ -8,11 +9,11 @@ class Player(AbstractUser):
 	sex = models.CharField(max_length = 1, choices = SEX_CHOICES)
 	grade = models.IntegerField(blank = True, null = True)
 	telephone = models.CharField(max_length = 10, blank = True)
-	personal_photo = models.ImageField(upload_to = 'personal_photo', blank = True)
-	student_card_front = models.ImageField(upload_to = 'student_card_front', blank = True)
-	student_card_back = models.ImageField(upload_to = 'student_card_back', blank = True)
-	ID_card = models.ImageField(upload_to = 'ID_card', blank = True)
-	proof = models.ImageField(upload_to = 'proof', blank = True)
+	personal_photo = models.ImageField(upload_to = 'images/personal_photo', blank = True)
+	student_card_front = models.ImageField(upload_to = 'images/student_card_front', blank = True)
+	student_card_back = models.ImageField(upload_to = 'images/student_card_back', blank = True)
+	ID_card = models.ImageField(upload_to = 'images/ID_card', blank = True)
+	proof = models.ImageField(upload_to = 'images/proof', blank = True)
 	is_active = models.BooleanField(default = True)
 
 	def __str__(self):
@@ -49,6 +50,7 @@ class Training(models.Model):
 	end_time = models.DateTimeField(null = True)
 	expire_time = models.DateTimeField(null = True)
 	time = models.DateTimeField(null = True)
+	create_time = models.DateTimeField(default = datetime.now())
 	court = models.CharField(max_length = 20)
 	participant = models.ManyToManyField(Playing_Sport)
 
@@ -56,6 +58,7 @@ class Voting(models.Model):
 	poster = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)
 	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
 	end_time = models.DateTimeField(null = True)
+	create_time = models.DateTimeField(default = datetime.now())
 	expire_time = models.DateTimeField(null = True)
 	participant = models.ManyToManyField(Playing_Sport)
 
@@ -63,5 +66,6 @@ class Noticing(models.Model):
 	poster = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)
 	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
 	expire_time = models.DateTimeField(null = True)
+	create_time = models.DateTimeField(default = datetime.now())
 	paragraph = models.TextField()
 
