@@ -9,7 +9,7 @@ class Player(AbstractUser):
 	sex = models.CharField(max_length = 1, choices = SEX_CHOICES)
 	grade = models.IntegerField(blank = True, null = True)
 	telephone = models.CharField(max_length = 10, blank = True)
-	personal_photo = models.ImageField(upload_to = 'images/personal_photo', blank = True)
+	personal_photo = models.ImageField(upload_to = 'images/personal_photo', default = 'images/personal_photo/unknown_user.jpg')
 	student_card_front = models.ImageField(upload_to = 'images/student_card_front', blank = True)
 	student_card_back = models.ImageField(upload_to = 'images/student_card_back', blank = True)
 	ID_card = models.ImageField(upload_to = 'images/ID_card', blank = True)

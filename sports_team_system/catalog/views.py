@@ -107,11 +107,37 @@ def mainpage(request):
 				elif submit_type == 'participate_train':
 					current_user = request.user
 					num = request.POST.get('number')
-					current_training = Training.objects.filter(id = num)
-					current_playing_sport = Playing_Sport.objects.filter(player = current_user, sport_name = current_training[0].sport_name)
-					current_training[0].participant.add(current_playing_sport[0])
-					current_training[0].save()
+					current_training = Training.objects.get(id = num)
+					current_playing_sport = Playing_Sport.objects.get(player = current_user, sport_name = current_training.sport_name)
+					
+					if current_playing_sport in current_training.participant.all():
+						pass
+					else:
+						if current_playing_sport.sport_name.sport_name == '羽球':
+							current_playing_sport.points_left -= 1
+						print(current_playing_sport.points_received + 1)
+						current_playing_sport.points_received += 1
+						print(current_playing_sport.points_received)
+						current_playing_sport.save()
+						current_training.participant.add(current_playing_sport)
+						current_training.save()									
+				elif submit_type == 'cancel_train':
+					current_user = request.user
+					num = request.POST.get('number')
+					current_training = Training.objects.get(id = num)
+					current_playing_sport = Playing_Sport.objects.get(player = current_user, sport_name = current_training.sport_name)
+					if current_playing_sport not in current_training.participant.all():
+						pass
+					else:
+						if current_playing_sport.sport_name.sport_name == '羽球':
+							current_playing_sport.points_left += 1
+						current_playing_sport.points_received -= 1
+						current_playing_sport.save()
+						current_training.participant.remove(current_playing_sport)
+						current_training.save()	
+
 				return HttpResponseRedirect('/mainpage/')
+
 	else:
 		return HttpResponseRedirect('/login/')
 
@@ -156,6 +182,32 @@ def settings(request):
 				else:
 					alert_flag = True
 					return render(request, 'settings.html', locals())
+
+		return HttpResponseRedirect('/mainpage/')
+	else:
+		return HttpResponseRedirect('/login/')
+
+def applyteam(request):
+	if request.user.is_authenticated:
+		if request.method == 'GET':
+			team = Team.objects.all()
+			return render(request, 'apply_team.html', locals())
+		if request.method == 'POST':
+			current_user = request.user
+			if request.POST.get('password'):
+				password = request.POST.get('password')
+				user = auth.authenticate(username=current_user.username, password=password)
+				if user is not None and user.is_active == True:
+					applying_team = request.POST.get('team')
+					target_team = Team.objects.get(sport_name = applying_team)
+					if target_team.sport_name == '羽球':
+						Playing_Sport.objects.create(player = current_user, sport_name = target_team, points_left = 10)
+					else:
+						Playing_Sport.objects.create(player = current_user, sport_name = target_team)
+				else:
+					alert_flag = True
+					team = Team.objects.all()
+					return render(request, 'apply_team.html', locals())
 
 		return HttpResponseRedirect('/mainpage/')
 	else:
