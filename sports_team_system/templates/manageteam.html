@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>	
+		<meta charset="utf-8">
+		<title>Sports Team System</title>
+		<!-- Description, Keywords and Author -->
+		<meta name="description" content="Sports Team System">
+		<meta name="author" content="Aosora Kuo">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- Styles -->
+		<link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+		
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="#">
+		<style>
+			html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
+		</style>
+	</head>
+	<body>
+		<div class="bg">
+			<!-- Navbar -->
+			<div class="w3-top">
+			 <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+			  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+			  <a href="/mainpage/" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Home</a>
+			  <a href="/applyteam/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Apply"><i class="fa fa-globe"></i></a>
+			  <a href="/settings/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
+			  {% if is_captain %}
+			  <a href="/manageteam/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Manage Team"><i class="fa fa-trophy"></i></a>
+			  {% endif %}
+			  <a href="/logout/" class="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white" title="LogOut">LogOut</a>
+			 </div>
+			</div>
+
+			<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
+				<div class="w3-row">
+					<div class="container">
+						<h3>Your Team : {{team.sport_name}}</h3><br>
+						<div class="row">
+							<div class="col-6">
+								<form action="" method="POST">
+									{% csrf_token %}
+									<label for="get_team"><h5>Get Team Info for Competitions</h5></label>
+									<div class="form-group">
+										<label for="members">Choose Members : </label>
+										<select class="selectpicker form-control" name="members" multiple>
+											{% for i in team_member %}
+											<option value="{{i.player}}">{{i.player}}</option>
+											{% endfor %}
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="password">Password : </label>
+										<input type="password" name="password" class="form-control">
+									</div>								
+									<button name="submit" class="btn btn-lg btn-primary" value="get_team">Confirm</button>
+								</form>
+							</div>
+							<div class="col-6">
+								<form action="" method="POST">
+									{% csrf_token %}
+									<label for="change_captain"><h5>Change Team Captain</h5></label>
+									<div class="form-group">
+										<label for="captain">Choose a Member : </label>
+										<select class="selectpicker form-control" name="captain">
+											{% for i in team_member %}
+											<option value="{{i.player}}">{{i.player}}</option>
+											{% endfor %}
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="password">Password : </label>
+										<input type="password" name="password" class="form-control">
+									</div>								
+									<button name="submit" class="btn btn-lg btn-danger" value="change_captain">Confirm</button>
+								</form>
+							</div>
+						</div>						
+					</div>
+				</div>
+			</div>
+		</div>
+	{% if alert_flag %}
+		<script type="text/javascript">alert("Wrong Password!")</script>
+	{% endif %}
+	</body>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+</html>

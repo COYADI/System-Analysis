@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>	
+		<meta charset="utf-8">
+		<title>Sports Team System</title>
+		<!-- Description, Keywords and Author -->
+		<meta name="description" content="Sports Team System">
+		<meta name="author" content="Aosora Kuo">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- Styles -->
+		<link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+		
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="#">
+		<style>
+			html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
+		</style>
+	</head>
+	<body>
+		<div class="bg">
+
+			<!-- Navbar -->
+			<div class="w3-top">
+			 <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+			  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+			  <a href="/mainpage/" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Home</a>
+			  <a href="/applyteam/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Apply"><i class="fa fa-globe"></i></a>
+			  <a href="/settings/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
+			  {% if is_captain %}
+			  <a href="/manageteam/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Manage Team"><i class="fa fa-trophy"></i></a>
+			  {% endif %}
+			  <a href="/logout/" class="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white" title="LogOut">LogOut</a>
+			 </div>
+			</div>
+
+			<!-- Navbar on small screens -->
+			<div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
+			  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
+			  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 2</a>
+			  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
+			  <a href="#" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
+			</div>
+			
+			<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
+				<div class="w3-row">
+					<div class="container">
+						<h3>Account Settings</h3>
+						<div class="row justify-content-start">
+							<div class="col-5">
+								<form action="" method="POST" enctype="multipart/form-data">
+									{% csrf_token %}
+									<div class="form-group">
+										<label for="name">Changing Name :</label>
+										<input type="text" class="form-control" name="name">
+									</div>
+									<div class="form-group">
+										<label for="telephone">Cellphone :</label>
+										<input type="text" class="form-control" name="telephone">
+									</div>
+									<div class="form-group">
+										<label for="personal_photo">Personal Photo :</label>
+							            <input name="personal_photo" type="file" class="form-control border-0">
+									</div>
+									<div class="form-group">
+										<label for="student_card_front">Student Card Front :</label>
+							            <input name="student_card_front" type="file" class="form-control border-0">
+									</div>
+									<div class="form-group">
+										<label for="student_card_back">Student Card Back :</label>
+							            <input name="student_card_back" type="file" class="form-control border-0">
+									</div>
+									<div class="form-group">
+										<label for="ID_card">Identity Card :</label>
+							            <input name="ID_card" type="file" class="form-control border-0">
+									</div>
+									<div class="form-group">
+										<label for="proof">Certificate of Enrollment :</label>
+							            <input name="proof" type="file" class="form-control border-0">
+									</div>
+									<div class="row"><h1>&nbsp</h1></div>
+									<div class="form-group">
+										<label for="password">Enter Password for certification :</label>
+										<input type="password" name="password" class="form-control">
+									</div>
+									<button class="btn btn-secondary" type="submit">Change</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+		<script>
+		// Accordion
+		function myFunction(id) {
+		  var x = document.getElementById(id);
+		  if (x.className.indexOf("w3-show") == -1) {
+		    x.className += " w3-show";
+		    x.previousElementSibling.className += " w3-theme-d1";
+		  } else { 
+		    x.className = x.className.replace("w3-show", "");
+		    x.previousElementSibling.className = 
+		    x.previousElementSibling.className.replace(" w3-theme-d1", "");
+		  }
+		}
+
+		// Used to toggle the menu on smaller screens when clicking on the menu button
+		function openNav() {
+		  var x = document.getElementById("navDemo");
+		  if (x.className.indexOf("w3-show") == -1) {
+		    x.className += " w3-show";
+		  } else { 
+		    x.className = x.className.replace(" w3-show", "");
+		  }
+		}
+		</script>
+		{% if alert_flag %}
+			<script type="text/javascript">alert("Wrong Password!")</script>
+		{% endif %}
+	</body>
+</html>
