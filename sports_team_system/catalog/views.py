@@ -89,7 +89,8 @@ def mainpage(request):
 			training_to_see.reverse()
 			voting_to_see.reverse()
 			noticing_to_see.reverse()
-			next_training = training_to_see[0]
+			if training_to_see:
+				next_training = training_to_see[0]
 			return render(request, 'mainpage.html', locals())
 
 		if request.method == 'POST':
