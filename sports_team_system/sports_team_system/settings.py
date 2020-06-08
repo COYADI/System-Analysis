@@ -141,3 +141,9 @@ AUTHENTICATION_BACKENDS = (
         ('django.contrib.auth.backends.RemoteUserBackend'),
         ('django.contrib.auth.backends.ModelBackend'),
 )
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'leo19990709@gmail.com'
+EMAIL_HOST_PASSWORD = 'tnajsiajjucpoqfw'
+EMAIL_PORT = 587
