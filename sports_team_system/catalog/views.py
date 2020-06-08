@@ -123,9 +123,9 @@ def mainpage(request):
 					else:
 						if current_playing_sport.sport_name.sport_name == '羽球':
 							current_playing_sport.points_left -= 1
-						print(current_playing_sport.points_received + 1)
+						#print(current_playing_sport.points_received + 1)
 						current_playing_sport.points_received += 1
-						print(current_playing_sport.points_received)
+						#print(current_playing_sport.points_received)
 						current_playing_sport.save()
 						current_training.participant.add(current_playing_sport)
 						current_training.save()									
