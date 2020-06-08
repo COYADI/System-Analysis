@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Create your models here.
 class Player(AbstractUser):
@@ -52,15 +52,22 @@ class Training(models.Model):
 	time = models.DateTimeField(null = True)
 	create_time = models.DateTimeField(default = datetime.now())
 	court = models.CharField(max_length = 20)
-	participant = models.ManyToManyField(Playing_Sport)
+	participant = models.ManyToManyField(Playing_Sport, blank = True)
 
 class Voting(models.Model):
 	poster = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)
 	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
 	end_time = models.DateTimeField(null = True)
 	create_time = models.DateTimeField(default = datetime.now())
-	expire_time = models.DateTimeField(null = True)
-	participant = models.ManyToManyField(Playing_Sport)
+	expire_time = models.DateTimeField(blank = True, null = True)
+	participant = models.ManyToManyField(Playing_Sport, blank = True)
+	question = models.TextField()
+	option_one = models.TextField()
+	option_two = models.TextField()
+	option_three = models.TextField(null = True)
+	option_one_cnt = models.IntegerField(default = 0)
+	option_two_cnt = models.IntegerField(default = 0)
+	option_three_cnt = models.IntegerField(default = 0)
 
 class Noticing(models.Model):
 	poster = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)

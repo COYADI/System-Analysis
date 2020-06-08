@@ -20,7 +20,7 @@ class TrainingAdmin(admin.ModelAdmin):
 
 @admin.register(Voting)
 class VotingAdmin(admin.ModelAdmin):
-	list_display = ('poster', 'sport_name', 'end_time', 'expire_time')
+	list_display = ('poster', 'sport_name', 'end_time', 'question', 'option_one', 'option_two', 'option_three')
 
 @admin.register(Noticing)
 class NoticingAdmin(admin.ModelAdmin):

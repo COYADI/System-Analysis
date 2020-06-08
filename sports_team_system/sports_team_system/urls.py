@@ -26,7 +26,9 @@ urlpatterns = [
     path('logout/', logout),
     path('mainpage/', mainpage),
     path('settings/', settings),
-    path('applyteam/', applyteam)
+    path('applyteam/', applyteam),
+    path('manageteam/', manageteam),
+    path('myinfo/', myinfo)
 ]
 
 # Use include() to add paths from the catalog application 

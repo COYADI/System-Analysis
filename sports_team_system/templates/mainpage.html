@@ -34,15 +34,9 @@
 			  <a href="/mainpage/" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Home</a>
 			  <a href="/applyteam/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Apply"><i class="fa fa-globe"></i></a>
 			  <a href="/settings/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a>
-			  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
-			  <div class="w3-dropdown-hover w3-hide-small">
-			    <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>     
-			    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-			      <a href="#" class="w3-bar-item w3-button">One new friend request</a>
-			      <a href="#" class="w3-bar-item w3-button">John Doe posted on your wall</a>
-			      <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
-			    </div>
-			  </div>
+			  {% if is_captain %}
+			  <a href="/manageteam/" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Manage Team"><i class="fa fa-trophy"></i></a>
+			  {% endif %}
 			  <a href="/logout/" class="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white" title="LogOut">LogOut</a>
 			 </div>
 			</div>
@@ -71,6 +65,8 @@
 			         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {% for i in current_team %}{{i.sport_name}} {% endfor %}</p>
 
 			        </div>
+
+			          <p><a href="/myinfo/" class="w3-button w3-block w3-theme-l4" >My Info</a></p>
 			      </div>
 			      <br>
 			      
@@ -105,9 +101,9 @@
 					        <span class="w3-right">{{i.sport_name}}</span>
 					        <h4>{{i.poster.name}}</h4><br>
 					        <hr class="w3-clear">
-					        <p>Time : {{i.time}}</p>
-					      	<p>Court : {{i.court}}</p>
-					      	<p>Due Time : {{i.end_time}}</p>
+					        <p><strong>Time : {{i.time}}</strong></p>
+					      	<p><strong>Court : {{i.court}}</strong></p>
+					      	<p><strong>Due Time : {{i.end_time}}</strong></p>
 					      	<p>Participants : {% for participant in i.participant.all %}{{participant.player}} {% endfor %}</p>
 					      	<p>Total : {{i.participant.all.count}}</p>
 					        <!--
@@ -169,7 +165,57 @@
 					        <span class="w3-right">{{i.sport_name}}</span>
 					        <h4>{{i.poster.name}}</h4><br>
 					        <hr class="w3-clear">
-					        <p>{{i.paragraph}}</p>
+					        <form action="" method="POST">
+					        	{% csrf_token %}
+					        	<div class="form-group">
+					        		<label for="question"><h5><strong>Question : {{i.question}}</strong></h5></label>
+					        	</div>
+
+					        	<div class="form-group btn-group btn-group-toggle" data-toggle="buttons">
+					        		<label class="btn btn-secondary">
+					        			<input type="radio" name="answer" value="one"> {{i.option_one}}
+					        		</label>
+					        		<label class="btn btn-secondary">
+					        			<input type="radio" name="answer" value="two"> {{i.option_two}}
+					        		</label>
+					        		{% if i.option_three is not none %}
+					        		<label class="btn btn-secondary">
+					        			<input type="radio" name="answer" value="three"> {{i.option_three}}
+					        		</label>
+					        		{% endif %}
+					        	</div>
+					        	<div class="form-group">
+					        		<input type="hidden" name="number" value="{{i.id}}">
+					        		<button type="submit" name="submit" value="govote" class="btn btn-primary w3-margin-bottom">Vote</button>
+					        	</div>					        	
+					        </form>
+
+					        <div class="container">
+					        	<table class="table">
+					        		<thead>
+					        			<tr>
+					        				<th colspan="2">Result</th>
+					        			</tr>					        			
+					        		</thead>
+					        		<tbody>
+					        			<tr>
+					        				<td>{{i.option_one}}</td>
+					        				<td>{{i.option_one_cnt}}</td>
+					        			</tr>
+					        			<tr>
+					        				<td>{{i.option_two}}</td>
+					        				<td>{{i.option_two_cnt}}</td>
+					        			</tr>
+					        			{% if i.option_three is not none %}
+					        			<tr>
+					        				<td>{{i.option_three}}</td>
+					        				<td>{{i.option_three_cnt}}</td>
+					        			</tr>
+					        			{% endif %}
+					        		</tbody>
+					        	</table>
+					        </div>
+					        
 					        <!--
 					          <div class="w3-row-padding" style="margin:0 -16px">
 					            <div class="w3-half">
@@ -181,8 +227,7 @@
 					        
 					        </div>
 					        -->
-					        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button> 
-					        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> 
+					        
 					      </div>
 					      {% endfor %}
 				      </div>
@@ -195,10 +240,8 @@
 			      <div class="w3-card w3-round w3-white w3-center">
 			        <div class="w3-container">
 			          <p>Upcoming Events:</p>
-			          <img src="/w3images/forest.jpg" alt="Forest" style="width:100%;">
-			          <p><strong>Holiday</strong></p>
-			          <p>Friday 15:00</p>
-			          <p><button class="w3-button w3-block w3-theme-l4">Info</button></p>
+			          <p><strong>Training : {{next_training.court}}</strong></p>
+			          <p>{{next_training.time}}</p>
 			        </div>
 			      </div>
 			      <br>
@@ -299,6 +342,68 @@
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 			        <button type="submit" class="btn btn-primary" name="submit" value="noticing">Post</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</form>
+		<!-- voting post-->
+		<form action="" method="POST">
+			{% csrf_token %}
+			<div class="modal fade" id="newvoting" tabindex="-1" role="dialog" aria-labelledby="newvotingLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="newvotingLabel">New Voting</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+
+						  <div class="form-group">
+						    <label for="sport_name">Sport Type: </label>
+						    <select class="form-control" name="sport_name" required>
+						    	<option value="" selected disabled>Select</option>
+						    	{% for i in current_team %}
+						    	<option>{{i.sport_name}}</option>
+						    	{% endfor %}
+						    </select>
+						  </div>
+
+						  <div class="form-group">
+						    <label for="end_time">Due time: </label>
+						    <input class="form-control" type="date" name="end_time" required>
+						  </div>
+
+						  <div class="form-group">
+						    <label for="expire_time">Expire time: </label>
+						    <input class="form-control" type="date" name="expire_time" required>
+						  </div>
+
+						  <div class="form-group">
+						    <label for="question">Question: </label>
+						    <input type="text" name="question" class="form-control" required>
+						  </div>
+
+						  <div class="form-group">
+						    <label for="option_one">Option 1: </label>
+						    <input type="text" name="option_one" class="form-control" required>
+						  </div>
+
+						  <div class="form-group">
+						    <label for="option_two">Option 2: </label>
+						    <input type="text" name="option_two" class="form-control" required>
+						  </div>
+
+						  <div class="form-group">
+						    <label for="option_three">Option 3: </label>
+						    <input type="text" name="option_three" class="form-control">
+						  </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+			        <button type="submit" class="btn btn-primary" name="submit" value="voting">Post</button>
 			      </div>
 			    </div>
 			  </div>
