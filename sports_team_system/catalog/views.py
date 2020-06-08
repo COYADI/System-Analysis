@@ -11,8 +11,46 @@ from django.utils import timezone
 from operator import itemgetter, attrgetter
 from datetime import datetime, timedelta
 import pandas as pd
+import re
+from django.core.mail import send_mail
+import base64
+from itsdangerous import URLSafeTimedSerializer as utsr
+import openpyxl
+from openpyxl import Workbook
+import requests
+import urllib
+from urllib.request import urlretrieve
+
+SECRET_KEY = '))wug4^rwwoiup4#9an29f5pk=uw#d()fkv@_*(a0sf9%rd9tc'
+SECRET_KEY = bytes(SECRET_KEY,encoding = 'utf-8')
+
+#token_confirm = Token(SECRET_KEY)
+
+
+class Token():
+	def __init__(self,security_key):
+		self.security_key = security_key
+		self.salt = base64.encodestring(security_key)
+	def generate_validate_token(self,username):
+		serializer = utsr(self.security_key)
+		return serializer.dumps(username,self.salt)
+	def confirm_validate_token(self,token,expiration=3600):
+		serializer = utsr(self.security_key)
+		return serializer.loads(token,
+		salt=self.salt,
+		max_age=expiration) 
+
+
 
 # Create your views here.
+def active(request,token):
+	token_confirm = Token(SECRET_KEY)
+	username = token_confirm.confirm_validate_token(token)
+	player = Player.objects.get(username=username)
+	player.is_active = True
+	player.save()
+	return HttpResponseRedirect('/index/')
+
 def hello_view(request):
     return render(request, 'system.html', {
         'data': "You've got a star!",
@@ -25,6 +63,8 @@ def register(request):
 	if request.method == 'GET':
 		return render(request, 'register.html')
 	if request.method == 'POST':
+		#generate varify token
+		token_confirm = Token(SECRET_KEY)
 		student_id = request.POST.get('student_id')
 		password = request.POST.get('password')
 		name = request.POST.get('name')
@@ -33,11 +73,26 @@ def register(request):
 		if Player.objects.filter(username = student_id).exists():
 			return render(request, 'register.html', {'error_message': 'Already registered student ID'})
 		email = student_id + '@ntu.edu.tw'
+
+		if re.match('(^b|^t|^r|^d)\d{8}',student_id) == None:
+			return render(request, 'register.html', {'error_message': 'Invalid student_id'})
 		player = Player.objects.create_user(student_id, email, password)
 		player.name = name
 		player.sex = sex
 		player.grade = grade
 		player.save()
+
+		token = token_confirm.generate_validate_token(student_id)
+		#active_key = base64.encodestring(username)
+		#send email to the register email
+		#http://0e2983ec5d6e.ngrok.io 
+		#http://localhost:8000
+		message = "\n".join([
+		u'{0},歡迎加入資管系隊系統~~'.format(student_id),
+		u'請訪問下方連結，完成使用者驗證:',
+		'/'.join(['http://localhost:8000/active',token])
+		])
+		send_mail(u'註冊使用者驗證資訊',message,'leo19990709@gmail.com',[email,]) 
 
 		#auth.login(request, player)
 		return HttpResponseRedirect('/index/')
@@ -297,8 +352,20 @@ def manageteam(request):
 								target = Player.objects.filter(name = i)
 								output_list += target.values('name', 'username', 'sex', 'grade', 'telephone', 'personal_photo', 'student_card_front', 'student_card_back', 'ID_card', 'proof')
 							output = pd.DataFrame.from_records(output_list)
+							Result_PATH = 'team_member.xlsx'
+							writer = pd.ExcelWriter(Result_PATH, engine='xlsxwriter')
+							output.to_excel(writer, sheet_name = 'mem_list')
+							writer.save()
+							#def down_file(request):
+							with open('team_member.xlsx', 'rb') as model_excel:
+								result = model_excel.read()
+							response = HttpResponse(result)
+							response['Content-Disposition'] = 'attachment; filename=team_member_list.xlsx'
+							return response
+							#xlsx_url = 'http://localhost:8000/media/team_member.xlsx'
+							#urlretrieve(xlsx_url, "test.xlsx")
 							print(output.head())
-							output.to_excel('member_list.xlsx')
+							#output.to_excel('member_list.xlsx')
 						elif submit_type == 'change_captain':
 							next_captain_name = request.POST.get('captain')
 							next_captain = Player.objects.get(name = next_captain_name)

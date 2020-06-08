@@ -4,7 +4,7 @@ from .models import *
 # Register your models here.
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
-	list_display = ('username', 'name', 'password', 'sex', 'grade')
+	list_display = ('username', 'name', 'password', 'sex', 'grade', 'is_active')
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
