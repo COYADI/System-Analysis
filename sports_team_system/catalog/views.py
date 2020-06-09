@@ -395,7 +395,7 @@ def myinfo(request):
 					if target_team.sport_name == '羽球':
 						Playing_Sport.objects.create(player = current_user, sport_name = target_team, points_left = 10)
 					else:
-						Playing_Sport.objects.create(player = current_user, sport_name = target_team)
+						Playing_Sport.objects.create(player = current_user, sport_name = target_team, points_left = 0)
 				else:
 					alert_flag = True
 					team = Team.objects.all()
