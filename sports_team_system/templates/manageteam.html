@@ -43,12 +43,27 @@
 			<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
 				<div class="w3-row">
 					<div class="container">
-						<h3>Your Team : {{team.sport_name}}</h3><br>
+						<h3><strong>Your Team : {{team.sport_name}}</strong></h3><br>
+						<div class="row">
+							<div class="col">
+								<h5><strong>Member's Availible Time Points:</strong></h5>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col text-center">Monday : {{team_availible_time.monday}}</div>
+							<div class="col text-center">Tuesday : {{team_availible_time.tuesday}}</div>
+							<div class="col text-center">Wednesday : {{team_availible_time.wednesday}}</div>
+							<div class="col text-center">Thursday : {{team_availible_time.thursday}}</div>
+							<div class="col text-center">Friday : {{team_availible_time.friday}}</div>
+						</div>
+						&nbsp
+						&nbsp
+						&nbsp	
 						<div class="row">
 							<div class="col-6">
 								<form action="" method="POST">
 									{% csrf_token %}
-									<label for="get_team"><h5>Get Team Info for Competitions</h5></label>
+									<label for="get_team"><h5><strong>Get Team Info for Competitions</strong></h5></label>
 									<div class="form-group">
 										<label for="members">Choose Members : </label>
 										<select class="selectpicker form-control" name="members" multiple>
@@ -67,7 +82,7 @@
 							<div class="col-6">
 								<form action="" method="POST">
 									{% csrf_token %}
-									<label for="change_captain"><h5>Change Team Captain</h5></label>
+									<label for="change_captain"><h5><strong>Change Team Captain</strong></h5></label>
 									<div class="form-group">
 										<label for="captain">Choose a Member : </label>
 										<select class="selectpicker form-control" name="captain">

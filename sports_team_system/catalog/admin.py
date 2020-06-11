@@ -25,3 +25,11 @@ class VotingAdmin(admin.ModelAdmin):
 @admin.register(Noticing)
 class NoticingAdmin(admin.ModelAdmin):
 	list_display = ('poster', 'sport_name', 'expire_time', 'paragraph')
+
+@admin.register(Availible_Day_Player)
+class Availible_Day_PlayerAdmin(admin.ModelAdmin):
+	list_display = ('player', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday')
+
+@admin.register(Availible_Day_Sport)
+class Availible_Day_SportAdmin(admin.ModelAdmin):
+	list_display = ('sport_name', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday')

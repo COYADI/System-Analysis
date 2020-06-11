@@ -49,6 +49,23 @@
 					</div>
 					{% endfor %}
 				</div>
+				<div class="w3-row">
+					<form action="" method="POST">
+						{% csrf_token %}
+						<h4>Your Availible Time : </h4><br>
+						<div class="form-group">
+							<label for="availible_time"></label>
+							<select class="selectpicker form-control" name="availible_time" multiple>
+								<option value="monday">Monday</option>
+								<option value="tuesday">Tuesday</option>
+								<option value="wednesday">Wednesday</option>
+								<option value="thursday">Thursday</option>
+								<option value="friday">Friday</option>
+							</select>
+						</div>
+						<button class="btn form-control btn-secondary" name="submit" type="submit" value="submit_day">Submit</button>
+					</form>
+				</div>
 			</div>
 		</div>
 	</body>

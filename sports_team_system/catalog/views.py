@@ -325,6 +325,7 @@ def manageteam(request):
 					break
 			if is_captain == False:
 				return HttpResponseRedirect('/mainpage/')
+			team_availible_time = Availible_Day_Sport.objects.get(sport_name = team)
 			team_member = Playing_Sport.objects.filter(sport_name = team)
 			return render(request, 'manageteam.html', locals())
 		if request.method == 'POST':
@@ -386,20 +387,105 @@ def myinfo(request):
 			return render(request, 'myinfo.html', locals())
 		if request.method == 'POST':
 			current_user = request.user
-			if request.POST.get('password'):
-				password = request.POST.get('password')
-				user = auth.authenticate(username=current_user.username, password=password)
-				if user is not None and user.is_active == True:
-					applying_team = request.POST.get('team')
-					target_team = Team.objects.get(sport_name = applying_team)
-					if target_team.sport_name == '羽球':
-						Playing_Sport.objects.create(player = current_user, sport_name = target_team, points_left = 10)
-					else:
-						Playing_Sport.objects.create(player = current_user, sport_name = target_team, points_left = 0)
-				else:
-					alert_flag = True
-					team = Team.objects.all()
-					return render(request, 'apply_team.html', locals())
+			submit_type = request.POST.get('submit')
+			if submit_type == 'submit_day':
+				current_playing_sport = Playing_Sport.objects.filter(player = current_user)
+				current_team = []
+				for i in current_playing_sport:
+					current_team.append(i.sport_name)
+				current_team_availible = []
+				for i in current_team:
+					current_team_availible += Availible_Day_Sport.objects.filter(sport_name = i)
+				if current_user in current_team_availible[0].participant.all():
+					for i in current_playing_sport:
+						current_player_availible = Availible_Day_Player.objects.get(player = i.player, sport_name = i.sport_name)
+						add_team_availible = Availible_Day_Sport.objects.get(sport_name = i.sport_name)
+						if current_player_availible.monday == True:
+							add_team_availible.monday -= current_player_availible.priority
+						if current_player_availible.tuesday == True:
+							add_team_availible.tuesday -= current_player_availible.priority
+						if current_player_availible.wednesday == True:
+							add_team_availible.wednesday -= current_player_availible.priority
+						if current_player_availible.thursday == True:
+							add_team_availible.thursday -= current_player_availible.priority
+						if current_player_availible.friday == True:
+							add_team_availible.friday -= current_player_availible.priority
+						add_team_availible.participant.remove(current_user)
+						add_team_availible.save()
+						current_player_availible.monday = False
+						current_player_availible.tuesday = False
+						current_player_availible.wednesday = False
+						current_player_availible.thursday = False
+						current_player_availible.friday = False
+						current_player_availible.priority = 0
+						current_player_availible.save()
+					#print(add_team_availible.monday, add_team_availible.tuesday, add_team_availible.wednesday, add_team_availible.thursday, add_team_availible.friday)
+					monday = tuesday = wednesday = thursday = friday = False
+					availible_time = request.POST.getlist('availible_time')					
+					if 'monday' in availible_time:
+						monday = True
+					if 'tuesday' in availible_time:
+						tuesday = True
+					if 'wednesday' in availible_time:
+						wednesday = True
+					if 'thursday' in availible_time:
+						thursday = True
+					if 'friday' in availible_time:
+						friday = True
+					for i in current_playing_sport:
+						priority = i.points_received // 5 + 1
+						current_player_availible = Availible_Day_Player.objects.get(player = i.player, sport_name = i.sport_name)
+						current_player_availible.priority = priority
+						add_team_availible = Availible_Day_Sport.objects.get(sport_name = i.sport_name)
+						if monday == True:
+							current_player_availible.monday = True
+							add_team_availible.monday += priority
+						if tuesday == True:
+							current_player_availible.tuesday = True
+							add_team_availible.tuesday += priority
+						if wednesday == True:
+							current_player_availible.wednesday = True
+							add_team_availible.wednesday += priority
+						if thursday == True:
+							current_player_availible.thursday = True
+							add_team_availible.thursday += priority
+						if friday == True:
+							current_player_availible.friday = True
+							add_team_availible.friday += priority
+						current_player_availible.save()
+						add_team_availible.participant.add(current_user)
+						add_team_availible.save()
+					#print(add_team_availible.monday, add_team_availible.tuesday, add_team_availible.wednesday, add_team_availible.thursday, add_team_availible.friday)
+				else:					
+					monday = tuesday = wednesday = thursday = friday = False
+					availible_time = request.POST.getlist('availible_time')					
+					if 'monday' in availible_time:
+						monday = True
+					if 'tuesday' in availible_time:
+						tuesday = True
+					if 'wednesday' in availible_time:
+						wednesday = True
+					if 'thursday' in availible_time:
+						thursday = True
+					if 'friday' in availible_time:
+						friday = True
+					for i in current_playing_sport:
+						priority = i.points_received // 5 + 1
+						Availible_Day_Player.objects.create(player = current_user, sport_name = i.sport_name, monday = monday, tuesday = tuesday, wednesday = wednesday, thursday = thursday, friday = friday, priority = priority)
+						add_team_availible = Availible_Day_Sport.objects.get(sport_name = i.sport_name)
+						if monday == True:
+							add_team_availible.monday += priority
+						if tuesday == True:
+							add_team_availible.tuesday += priority
+						if wednesday == True:
+							add_team_availible.wednesday += priority
+						if thursday == True:
+							add_team_availible.thursday += priority
+						if friday == True:
+							add_team_availible.friday += priority
+						add_team_availible.participant.add(current_user)
+						add_team_availible.save()
+
 
 		return HttpResponseRedirect('/mainpage/')
 	else:

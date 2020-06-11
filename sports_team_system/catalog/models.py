@@ -35,6 +35,30 @@ class Team(models.Model):
 	def __str__(self):
 		return self.sport_name
 
+class Availible_Day_Player(models.Model):
+	player = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)
+	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
+	monday = models.BooleanField(default = False)
+	tuesday = models.BooleanField(default = False)
+	wednesday = models.BooleanField(default = False)
+	thursday = models.BooleanField(default = False)
+	friday = models.BooleanField(default = False)
+	priority = models.IntegerField(blank = True)
+
+	#def __str__(self):
+	#	return self.player.name + ' ' + self.sport_name.sport_name
+
+class Availible_Day_Sport(models.Model):
+	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
+	monday = models.IntegerField(default = 0)
+	tuesday = models.IntegerField(default = 0)
+	wednesday = models.IntegerField(default = 0)
+	thursday = models.IntegerField(default = 0)
+	friday = models.IntegerField(default = 0)
+	participant = models.ManyToManyField(Player, blank = True)
+	def __str__(self):
+		return self.sport_name.sport_name
+
 class Playing_Sport(models.Model):
 	player = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True)
 	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
