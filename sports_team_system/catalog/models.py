@@ -45,8 +45,8 @@ class Availible_Day_Player(models.Model):
 	friday = models.BooleanField(default = False)
 	priority = models.IntegerField(blank = True)
 
-	#def __str__(self):
-	#	return self.player.name + ' ' + self.sport_name.sport_name
+	def __str__(self):
+		return self.player.name + ' ' + self.sport_name.sport_name
 
 class Availible_Day_Sport(models.Model):
 	sport_name = models.ForeignKey(Team, on_delete = models.SET_NULL, null = True)
